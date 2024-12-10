@@ -67,13 +67,12 @@ namespace LigaFutAPI.Controllers
         }
 
 
-        [HttpPost]
-        [Route("agregar")]
+        [HttpPost("agregar")]
         public async Task<ActionResult> AgregarJugador([FromBody] JugadorDTO nuevoJugador)
         {
             try
             {
-                var resultado = _partidosServices.AgregarJugador(nuevoJugador);
+                var resultado = await _partidosServices.AgregarJugador(nuevoJugador);
                 if (resultado)
                 {
                     return Ok("Jugador Agregado");

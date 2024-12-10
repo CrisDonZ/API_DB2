@@ -9,7 +9,7 @@ namespace Core.Models
 {
     public class JugadorDTO
     {
-        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [Required]
         public int JugadorId { get; set; }
 
         public string Nombre { get; set; } = null!;

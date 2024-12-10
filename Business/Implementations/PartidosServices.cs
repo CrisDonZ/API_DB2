@@ -83,11 +83,11 @@ namespace Business.Implementations
             return resultado;
         }
 
-        public bool AgregarJugador(JugadorDTO nuevoJugador)
+        public async Task<bool> AgregarJugador(JugadorDTO nuevoJugador)
         {
             try
             {
-                var jugador = new JugadorDTO
+                var jugador = new Jugadore
                 {
                     JugadorId = nuevoJugador.JugadorId,
                     Nombre = nuevoJugador.Nombre,
@@ -96,8 +96,8 @@ namespace Business.Implementations
                     EquipoId = nuevoJugador.EquipoId
                 };
 
-                _ligaFutContext.Jugadores.Add(jugador);
-                _ligaFutContext.SaveChanges();
+                await _ligaFutContext.Jugadores.AddAsync(jugador);
+                await _ligaFutContext.SaveChangesAsync();
 
                 return true;
             }

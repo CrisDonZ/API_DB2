@@ -7,8 +7,7 @@ namespace Core.EFModels;
 
 public partial class Jugadore
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
     public int JugadorId { get; set; }
 
     public string Nombre { get; set; } = null!;
