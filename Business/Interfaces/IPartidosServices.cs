@@ -13,7 +13,7 @@ namespace Business.Interfaces
 
         List<JugadorDTO> BuscarJugadorPorNombre(string nombre);
 
-        Task<bool> AgregarJugador(string nombre, int edad, string posicion, int equipoId);
+        bool AgregarJugador(JugadorDTO nuevoJugador);
 
         Task<bool> ActualizarJugador(int jugadorId, JugadorDTO jugadorActualizado);
 

@@ -83,31 +83,28 @@ namespace Business.Implementations
             return resultado;
         }
 
-        public async Task<bool> AgregarJugador(string nombre, int edad, string posicion, int equipoId)
+        public bool AgregarJugador(JugadorDTO nuevoJugador)
         {
             try
             {
-                // Crear el objeto de jugador sin incluir JugadorId
-                var jugador = new Jugadore
+                var jugador = new JugadorDTO
                 {
-                    Nombre = nombre,
-                    Edad = edad,
-                    Posicion = posicion,
-                    EquipoId = equipoId // Relación con el equipo
+                    JugadorId = nuevoJugador.JugadorId,
+                    Nombre = nuevoJugador.Nombre,
+                    Edad = nuevoJugador.Edad,
+                    Posicion = nuevoJugador.Posicion,
+                    EquipoId = nuevoJugador.EquipoId
                 };
 
-                // Agrega el jugador a la base de datos
-                await _ligaFutContext.Jugadores.AddAsync(jugador);
-
-                // Guardar los cambios
-                await _ligaFutContext.SaveChangesAsync();
+                _ligaFutContext.Jugadores.Add(jugador);
+                _ligaFutContext.SaveChanges();
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error al conectar con la base de datos: {ex.Message}");
-                throw;
+                Console.WriteLine("Ocurrió un error");
+                return false;
             }
         }
 

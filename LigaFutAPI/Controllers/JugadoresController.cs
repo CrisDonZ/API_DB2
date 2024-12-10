@@ -69,26 +69,19 @@ namespace LigaFutAPI.Controllers
 
         [HttpPost]
         [Route("agregar")]
-        public async Task<ActionResult> AgregarJugador(string nombre, int edad, string posicion, int equipoId)
+        public async Task<ActionResult> AgregarJugador([FromBody] JugadorDTO nuevoJugador)
         {
             try
             {
-                // Llama al método del servicio para agregar el jugador
-                bool resultado = await _partidosServices.AgregarJugador(nombre, edad, posicion, equipoId);
-
-                // Evalúa el resultado y devuelve la respuesta adecuada
+                var resultado = _partidosServices.AgregarJugador(nuevoJugador);
                 if (resultado)
                 {
-                    return Ok("Jugador agregado exitosamente.");
-                }
-                else
-                {
-                    return StatusCode(500, "No se pudo agregar el jugador.");
+                    return Ok("Jugador Agregado");
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return BadRequest(ex.Message);
             }
         }
 
