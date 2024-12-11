@@ -93,7 +93,7 @@ namespace LigaFutAPI.Controllers
 
                 if (nuevoJugador.EquipoId <= 0)
                 {
-                    return BadRequest("El ID del equipo debe ser válido.");
+                    return BadRequest("El ID del equipo debe ser válido");
                 }
                 // Validación de JugadorId ya existente
                 var jugadorExiste = await _partidosServices.ValidarJugadorIdExistente(nuevoJugador.JugadorId);
