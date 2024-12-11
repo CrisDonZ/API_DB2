@@ -104,10 +104,9 @@ namespace Business.Implementations
             catch (Exception)
             {
                 Console.WriteLine("Ocurrió un error");
-                return false;
+                throw;
             }
         }
-
 
         public async Task<bool> ActualizarJugador(int jugadorId, JugadorDTO jugadorActualizado)
         {
@@ -169,5 +168,18 @@ namespace Business.Implementations
             }
         }
 
+        public async Task<bool> ValidarJugadorIdExistente(int jugadorId)
+        {
+            return await _ligaFutContext.Jugadores
+                .AsNoTracking()
+                .AnyAsync(j => j.JugadorId == jugadorId);
+        }
+
+        public async Task<bool> ValidarEquipoExistente(int equipoId)
+        {
+            return await _ligaFutContext.Equipos
+                .AsNoTracking()
+                .AnyAsync(e => e.EquipoId == equipoId);
+        }
     }
 }

@@ -30,7 +30,7 @@ public partial class LigaFutContext : DbContext
     {
         modelBuilder.Entity<Equipo>(entity =>
         {
-            entity.HasKey(e => e.EquipoId).HasName("PK__Equipo__DE8A0BFFD5BEF161");
+            entity.HasKey(e => e.EquipoId).HasName("PK__Equipo__DE8A0BFF40DD46A6");
 
             entity.ToTable("Equipo");
 
@@ -51,7 +51,7 @@ public partial class LigaFutContext : DbContext
 
         modelBuilder.Entity<Jugadore>(entity =>
         {
-            entity.HasKey(e => e.JugadorId).HasName("PK__Jugadore__4B5753A2AF341AC7");
+            entity.HasKey(e => e.JugadorId).HasName("PK__Jugadore__4B57524252717494");
 
             entity.Property(e => e.JugadorId)
                 .ValueGeneratedNever()
@@ -67,7 +67,7 @@ public partial class LigaFutContext : DbContext
             entity.HasOne(d => d.Equipo).WithMany(p => p.Jugadores)
                 .HasForeignKey(d => d.EquipoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Jugadores_Equipo");
+                .HasConstraintName("FK__Jugadores__Equip__3B75D760");
         });
 
         modelBuilder.Entity<Partido>(entity =>

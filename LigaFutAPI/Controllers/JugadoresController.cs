@@ -72,20 +72,52 @@ namespace LigaFutAPI.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(nuevoJugador.Posicion))
+                {
+                    return BadRequest("El espacio de nombre no puede estar vacio");
+                }
+                if (nuevoJugador.Nombre.Any(char.IsDigit))
+                {
+                    return BadRequest("El nombre del jugador no puede contener números.");
+                }
+
+                if (nuevoJugador.Edad <= 0)
+                {
+                    return BadRequest("La edad debe ser mayor a 0.");
+                }
+
+                if (string.IsNullOrWhiteSpace(nuevoJugador.Posicion))
+                {
+                    return BadRequest("La posición del jugador es obligatoria.");
+                }
+
+                if (nuevoJugador.EquipoId <= 0)
+                {
+                    return BadRequest("El ID del equipo debe ser válido.");
+                }
+                // Validación de JugadorId ya existente
+                var jugadorExiste = await _partidosServices.ValidarJugadorIdExistente(nuevoJugador.JugadorId);
+
+                if (jugadorExiste)
+                    return BadRequest($"El jugador '{nuevoJugador.JugadorId}' ya existe.");
+
+                // Validación de EquipoId existente
+                var equipoExiste = await _partidosServices.ValidarEquipoExistente(nuevoJugador.EquipoId);
+                if (!equipoExiste)
+                    return BadRequest($"El EquipoId '{nuevoJugador.EquipoId}' no existe en la base de datos.");
+
                 var resultado = await _partidosServices.AgregarJugador(nuevoJugador);
                 if (resultado)
                 {
                     return Ok("Jugador Agregado");
                 }
+                return BadRequest(resultado);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-
-
 
         [HttpPut("Actualizar/{id}")]
         public async Task<ActionResult> ActualizarJugador(int id, [FromBody] JugadorDTO jugadorActualizado)

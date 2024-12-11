@@ -19,5 +19,8 @@ namespace Business.Interfaces
 
         Task<bool> EliminarJugador(int jugadorId);
 
+        Task<bool> ValidarJugadorIdExistente(int jugadorId);
+        Task<bool> ValidarEquipoExistente(int equipoId);
+
     }
 }
