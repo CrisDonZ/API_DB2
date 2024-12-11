@@ -99,7 +99,7 @@ namespace LigaFutAPI.Controllers
                 var jugadorExiste = await _partidosServices.ValidarJugadorIdExistente(nuevoJugador.JugadorId);
 
                 if (jugadorExiste)
-                    return BadRequest($"El jugador '{nuevoJugador.JugadorId}' ya existe.");
+                    return BadRequest($"El jugador '{nuevoJugador.JugadorId}' ya existe en la base de datos.");
 
                 // Validación de EquipoId existente
                 var equipoExiste = await _partidosServices.ValidarEquipoExistente(nuevoJugador.EquipoId);
