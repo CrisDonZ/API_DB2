@@ -87,6 +87,7 @@ namespace Business.Implementations
         {
             try
             {
+
                 var jugador = new Jugadore
                 {
                     JugadorId = nuevoJugador.JugadorId,
@@ -180,6 +181,40 @@ namespace Business.Implementations
             return await _ligaFutContext.Equipos
                 .AsNoTracking()
                 .AnyAsync(e => e.EquipoId == equipoId);
+        }
+
+        public async Task<bool> ValidarNombre(string nombre)
+        {
+            return await _ligaFutContext.Jugadores.AsNoTracking()
+                .AnyAsync(j => j.Nombre == nombre);
+        }
+
+        public async Task<bool> ValidarPosicion(string posicion)
+        {
+            if(posicion == "Delantero")
+            {
+                return true;
+            }
+            
+            if (posicion == "Defensa")
+            {
+                return true;
+            }
+                   
+            if(posicion == "Centrocampista")
+            {
+                return true;
+            }
+            
+            if(posicion == "Arquero")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces;
 using Core.Models;
+using Infraestructure.DBContext;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -72,9 +73,10 @@ namespace LigaFutAPI.Controllers
         {
             try
             {
+                
                 if (string.IsNullOrWhiteSpace(nuevoJugador.Posicion))
                 {
-                    return BadRequest("El espacio de nombre no puede estar vacio");
+                    return BadRequest("El espacio de posicion no puede estar vacio");
                 }
                 if (nuevoJugador.Nombre.Any(char.IsDigit))
                 {
@@ -90,7 +92,7 @@ namespace LigaFutAPI.Controllers
                 {
                     return BadRequest("La posición del jugador es obligatoria.");
                 }
-
+               
                 if (nuevoJugador.EquipoId <= 0)
                 {
                     return BadRequest("El ID del equipo debe ser válido");
@@ -105,6 +107,17 @@ namespace LigaFutAPI.Controllers
                 var equipoExiste = await _partidosServices.ValidarEquipoExistente(nuevoJugador.EquipoId);
                 if (!equipoExiste)
                     return BadRequest($"El EquipoId '{nuevoJugador.EquipoId}' no existe en la base de datos.");
+                //Validar Nombre repetido
+                var nombreOcupado = await _partidosServices.ValidarNombre(nuevoJugador.Nombre);
+                if (nombreOcupado)
+                {
+                    return BadRequest("El nombre del jugador ya está ocupado");
+                }
+                var posicionV = await _partidosServices.ValidarPosicion(nuevoJugador.Posicion);
+                if(!posicionV)
+                {
+                    return BadRequest("Posicion no es valida");
+                }
 
                 var resultado = await _partidosServices.AgregarJugador(nuevoJugador);
                 if (resultado)
@@ -158,6 +171,16 @@ namespace LigaFutAPI.Controllers
                 {
                     return BadRequest("El ID del equipo debe ser válido.");
                 }
+                var nombreOcupado = await _partidosServices.ValidarNombre(jugadorActualizado.Nombre);
+                if (nombreOcupado)
+                {
+                    return BadRequest("El nombre del jugador ya está ocupado");
+                }
+                var posicionV = await _partidosServices.ValidarPosicion(jugadorActualizado.Posicion);
+                if (!posicionV)
+                {
+                    return BadRequest("Posicion no es valida");
+                }
 
                 // Llamar al servicio para actualizar al jugador
                 var resultado = await _partidosServices.ActualizarJugador(id, jugadorActualizado);
@@ -185,7 +208,13 @@ namespace LigaFutAPI.Controllers
                 {
                     return BadRequest("El Id del jugador debe ser positivo");
                 }
-
+                /*
+                var tieneContrato = await _ligaFutContext.Contratos.AnyAsync(c => c.JugadorId == id);
+                if (tieneContrato)
+                {
+                    return BadRequest("No se puede eliminar al jugador porque tiene contratos asociados.");
+                }
+                */
                 var resultado = await _partidosServices.EliminarJugador(id);
 
                 // Verificar si se encontró algún resultado

@@ -21,6 +21,9 @@ namespace Business.Interfaces
 
         Task<bool> ValidarJugadorIdExistente(int jugadorId);
         Task<bool> ValidarEquipoExistente(int equipoId);
+        Task<bool> ValidarNombre(string nombre);
+
+        Task<bool> ValidarPosicion(string posicion);
 
     }
 }
